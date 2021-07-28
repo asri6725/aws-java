@@ -1,0 +1,90 @@
+Resources:
+  detailsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: dummy-details
+      AttributeDefinitions:
+        - AttributeName: uid
+          AttributeType: S
+      KeySchema:
+        - AttributeName: uid
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+  # detailsBucket:
+  #   Type: AWS::S3::Bucket
+  #   DeletionPolicy: Retain
+  #   Properties:
+  #     BucketName: dummy-details-bucket-991838921382
+  #     BucketEncryption:
+  #       ServerSideEncryptionConfiguration:
+  #         - ServerSideEncryptionByDefault:
+  #             SSEAlgorithm: AES256
+  #     PublicAccessBlockConfiguration:
+  #       BlockPublicAcls: true
+  #       BlockPublicPolicy: true
+  #       IgnorePublicAcls: true
+  #       RestrictPublicBuckets: true
+  #     AccessControl: Private
+  #     VersioningConfiguration:
+  #       Status: Enabled
+  detailsFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: dummy-details-role
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: dummy-details-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:CreateLogGroup"
+                  - "logs:PutLogEvents"
+                  - "logs:CreateLogStream"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "ec2:CreateNetworkInterface"
+                  - "ec2:DescribeNetworkInterfaces"
+                  - "ec2:DetachNetworkInterface"
+                  - "ec2:DeleteNetworkInterface"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "sts:AssumeRole"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "dynamodb:List*"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "dynamodb:DescribeTable"
+                  - "dynamodb:Get*"
+                  - "dynamodb:Query"
+                  - "dynamodb:Scan"
+                  - "dynamodb:Update*"
+                  - "dynamodb:PutItem"
+                  - "dynamodb:ExportTableToPointInTime"
+                Resource: 
+                  - "arn:aws:dynamodb:ap-southeast-2:${self:custom.account_id}:table/dummy-details"
+              # - Effect: Allow
+              #   Action:
+              #     - "s3:PutObject"
+              #     - "s3:GetObject"
+              #     - "s3:ListBucket"
+              #     - "s3:DeleteObject"
+              #   Resource:
+              #     - { "Fn::Join": ["", ["arn:aws:s3:::", "dummy-details-bucket-991838921382", "/*" ] ] }
+              #     - { "Fn::Join": ["", ["arn:aws:s3:::", "dummy-details-bucket-991838921382" ] ] }
