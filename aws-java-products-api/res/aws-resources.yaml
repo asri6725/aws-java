@@ -1,18 +1,18 @@
 Resources:
-  detailsTable:
-    Type: AWS::DynamoDB::Table
-    DeletionPolicy: Retain
-    Properties:
-      TableName: dummy-details
-      AttributeDefinitions:
-        - AttributeName: uid
-          AttributeType: S
-      KeySchema:
-        - AttributeName: uid
-          KeyType: HASH
-      BillingMode: PAY_PER_REQUEST
-      SSESpecification:
-        SSEEnabled: true
+  # detailsTable:
+  #   Type: AWS::DynamoDB::Table
+  #   DeletionPolicy: Retain
+  #   Properties:
+  #     TableName: dummy-details
+  #     AttributeDefinitions:
+  #       - AttributeName: uid
+  #         AttributeType: S
+  #     KeySchema:
+  #       - AttributeName: uid
+  #         KeyType: HASH
+  #     BillingMode: PAY_PER_REQUEST
+  #     SSESpecification:
+  #       SSEEnabled: true
   # detailsBucket:
   #   Type: AWS::S3::Bucket
   #   DeletionPolicy: Retain
@@ -78,7 +78,7 @@ Resources:
                   - "dynamodb:PutItem"
                   - "dynamodb:ExportTableToPointInTime"
                 Resource: 
-                  - "arn:aws:dynamodb:ap-southeast-2:${self:custom.account_id}:table/dummy-details"
+                  - "arn:aws:dynamodb:ap-southeast-2:922298162350:table/dummy-details"
               # - Effect: Allow
               #   Action:
               #     - "s3:PutObject"

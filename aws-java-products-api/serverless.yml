@@ -15,7 +15,7 @@ provider:
 
 resources:
   - ${file(res/aws-resources.yaml)}
-  - ${file(res/aws-web.yaml)}
+  # - ${file(res/aws-web.yaml)}
 
 
 package:
